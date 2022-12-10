@@ -4,61 +4,30 @@ from functools import total_ordering
 
 @total_ordering
 class RPS:
-    score = 0
-
-    def __lt__(self, other):
-        return NotImplemented
-
-    def __eq__(self, other):
-        return self.score == other.score
-
-    def win(self):
-        return NotImplemented
-
-    def lose(self):
-        return NotImplemented
-
+    __lt__ = lambda self, other: NotImplemented
+    __eq__ = lambda self, other: isinstance(other, self.__class__)
+    win = lambda self: NotImplemented
+    lose = lambda self: NotImplemented
 
 class Rock(RPS):
     score = 1
-
-    def __lt__(self, other):
-        """Paper (2) defeats Rock"""
-        return other.score == 2
-
-    def win(self):
-        return Paper()
-
-    def lose(self):
-        return Scissors()
+    __lt__ = lambda self, other: isinstance(other, Paper)
+    win = lambda self: Paper()
+    lose = lambda self: Scissors()
 
 
 class Paper(RPS):
     score = 2
-
-    def __lt__(self, other):
-        """Scissors (3) defeats Paper"""
-        return other.score == 3
-
-    def win(self):
-        return Scissors()
-
-    def lose(self):
-        return Rock()
+    __lt__ = lambda self, other: isinstance(other, Scissors)
+    win = lambda self: Scissors()
+    lose = lambda self: Rock()
 
 
 class Scissors(RPS):
     score = 3
-
-    def __lt__(self, other):
-        """Rock (1) defeats Scissors"""
-        return other.score == 1
-
-    def win(self):
-        return Rock()
-
-    def lose(self):
-        return Paper()
+    __lt__ = lambda self, other: isinstance(other, Rock)
+    win = lambda self: Rock()
+    lose = lambda self: Paper()
 
 
 translate = {
